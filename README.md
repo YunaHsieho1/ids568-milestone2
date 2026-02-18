@@ -1,8 +1,4 @@
-# Milestone
-
-This document describes deployment workflow, dependency strategy, image optimization, security, and troubleshooting for this project.
-
----
+# Milestone 2
 
 ## 1. Dependency Pinning Strategy
 
@@ -65,38 +61,15 @@ This document describes deployment workflow, dependency strategy, image optimiza
 
 To satisfy the assignment requirement for proof of a successful image push:
 
-### Option A — Screenshot in the repo
+### Screenshot in the repo
 
 1. In GCP Console go to **Artifact Registry** → your repository (e.g. `milestone2`) → open the **ml-service** image and select a tag (e.g. `v0.1.4`).
 2. Take a screenshot showing the repository name, image name, and tag.
-3. Save it in the repo, e.g. `docs/registry-verification.png` or `docs/gcp-artifact-registry.png`.
-4. Reference it in this runbook or in the README, for example:
 
-   ```markdown
-   ### Registry verification
-   Image successfully pushed to GCP Artifact Registry:
-   ![Registry verification](docs/registry-verification.png)
-   ```
+### Registry verification
+   ![Registry verification](docs/registry_verification.png)
 
-### Option B — Link and image path in README/RUNBOOK
 
-1. In GCP Console, open your Artifact Registry repository and the **ml-service** image.
-2. Copy the browser URL (or note the full image path).
-3. In **RUNBOOK.md** or **README.md** add a “Registry verification” section with:
-   - The **full image path**, e.g.  
-     `us-central1-docker.pkg.dev/milestone2-tzuyu/milestone2/ml-service:v0.1.4`
-   - Optional: “Verified in GCP Console: Artifact Registry → [repository] → ml-service → tag v0.1.4” (no need to paste a shareable link; the path is enough for graders to know where to look).
-
-### Example section for RUNBOOK or README
-
-```markdown
-## Registry verification
-- **Registry**: GCP Artifact Registry
-- **Image**: `us-central1-docker.pkg.dev/<PROJECT_ID>/<REPO_NAME>/ml-service:v0.1.4`
-- **Proof**: See screenshot [docs/registry-verification.png](docs/registry-verification.png) (or: verified in GCP Console under Artifact Registry.)
-```
-
-Replace `<PROJECT_ID>` and `<REPO_NAME>` with your actual values (e.g. `milestone2-tzuyu` and `milestone2`).
 
 ---
 
@@ -112,5 +85,3 @@ Replace `<PROJECT_ID>` and `<REPO_NAME>` with your actual values (e.g. `mileston
 
 ---
 
-   ### 8. Registry verification
-   ![Registry verification](docs/registry_verification.png)
