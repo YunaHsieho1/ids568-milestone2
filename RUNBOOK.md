@@ -112,8 +112,5 @@ Replace `<PROJECT_ID>` and `<REPO_NAME>` with your actual values (e.g. `mileston
 
 ---
 
-## Related files
-
-- **CI workflow**: `.github/workflows/build.yml`
-- **GCP setup**: `docs/GCP_ARTIFACT_REGISTRY_SETUP.md`
-- **Project overview**: `README.md`
+   ### Registry verification
+   ![Registry verification](docs/registry_verification.png)
