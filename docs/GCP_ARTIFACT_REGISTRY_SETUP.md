@@ -52,10 +52,14 @@
 
 ---
 
-## 第四步：在 GitHub 設定 Secrets
+## 第四步：在 GitHub 設定 Variable 與 Secrets
 
 1. 打開你的 **GitHub 專案** → **Settings** → **Secrets and variables** → **Actions**。
-2. 點 **New repository secret**，依序新增下面幾個（若用本教學的 workflow，名稱要一致）：
+2. **Variables 分頁** → **New repository variable**：
+   - **Name**: `REGISTRY_TYPE`
+   - **Value**: `gcp`  
+   （這樣 workflow 才會走 GCP 登入與 push；用其他 registry 時不要設或改成其他值。）
+3. **Secrets 分頁** → **New repository secret**，依序新增：
 
 | Secret 名稱 | 值 | 說明 |
 |-------------|----|------|
@@ -63,11 +67,7 @@
 | `ARTIFACT_REGISTRY_REPO` | `你的專案ID/存放區名稱` | 例如 `my-mlops-project/ml-service`（專案 ID + 存放區名稱，中間一個 `/`）。 |
 | `GCP_SA_KEY` | （整份 JSON 內容） | 第三步下載的 JSON 檔，用編輯器打開，**整份複製貼上**（從 `{` 到 `}`）。 |
 
-- 若你用的是「一般 registry」（例如 Docker Hub 或學校給的），則用原本的：
-  - `REGISTRY`
-  - `REGISTRY_USERNAME`
-  - `REGISTRY_PASSWORD`
-- **用 GCP 時不要設** `REGISTRY_USERNAME` / `REGISTRY_PASSWORD`，改設上面三個即可。
+- 若你用的是「一般 registry」（例如 Docker Hub 或學校給的），則**不要設** `REGISTRY_TYPE` 或設成非 `gcp`，並設 Secrets：`REGISTRY`、`REGISTRY_USERNAME`、`REGISTRY_PASSWORD`。
 
 ---
 

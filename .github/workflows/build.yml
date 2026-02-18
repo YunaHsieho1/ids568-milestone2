@@ -1,8 +1,12 @@
 # Milestone 2: Build, Test, and Push ML service image
 #
-# Option A - GCP Artifact Registry: set REGISTRY, ARTIFACT_REGISTRY_REPO, GCP_SA_KEY
+# Option A - GCP Artifact Registry:
+#   Variables: REGISTRY_TYPE = gcp
+#   Secrets: REGISTRY, ARTIFACT_REGISTRY_REPO, GCP_SA_KEY
 #   See docs/GCP_ARTIFACT_REGISTRY_SETUP.md
-# Option B - Other registry: set REGISTRY, REGISTRY_USERNAME, REGISTRY_PASSWORD
+# Option B - Other registry:
+#   Secrets: REGISTRY, REGISTRY_USERNAME, REGISTRY_PASSWORD
+#   (Do not set REGISTRY_TYPE or set it to anything other than 'gcp')
 
 name: Build and Push
 
@@ -48,18 +52,18 @@ jobs:
           load: true
           tags: ml-service:latest
 
-      # --- GCP Artifact Registry: login with service account JSON ---
+      # --- GCP Artifact Registry: set Variables → REGISTRY_TYPE = gcp ---
       - name: Login to GCP Artifact Registry
-        if: startsWith(github.ref, 'refs/tags/v') && secrets.GCP_SA_KEY != '' && secrets.REGISTRY != '' && secrets.ARTIFACT_REGISTRY_REPO != ''
+        if: startsWith(github.ref, 'refs/tags/v') && vars.REGISTRY_TYPE == 'gcp'
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
           REGISTRY: ${{ secrets.REGISTRY }}
         run: |
           echo "$GCP_SA_KEY" | docker login -u _json_key --password-stdin "https://$REGISTRY"
 
-      # --- Other registries (Docker Hub, etc.): login with username/password ---
+      # --- Other registries: do not set REGISTRY_TYPE or set to something other than gcp ---
       - name: Login to container registry
-        if: startsWith(github.ref, 'refs/tags/v') && secrets.GCP_SA_KEY == '' && secrets.REGISTRY != ''
+        if: startsWith(github.ref, 'refs/tags/v') && vars.REGISTRY_TYPE != 'gcp'
         uses: docker/login-action@v3
         with:
           registry: ${{ secrets.REGISTRY }}
@@ -68,7 +72,7 @@ jobs:
 
       # --- Push: GCP path = REGISTRY/ARTIFACT_REGISTRY_REPO/ml-service:TAG ---
       - name: Push image to GCP Artifact Registry
-        if: startsWith(github.ref, 'refs/tags/v') && secrets.GCP_SA_KEY != '' && secrets.REGISTRY != '' && secrets.ARTIFACT_REGISTRY_REPO != ''
+        if: startsWith(github.ref, 'refs/tags/v') && vars.REGISTRY_TYPE == 'gcp'
         env:
           REGISTRY: ${{ secrets.REGISTRY }}
           ARTIFACT_REGISTRY_REPO: ${{ secrets.ARTIFACT_REGISTRY_REPO }}
@@ -80,7 +84,7 @@ jobs:
 
       # --- Push: generic path = REGISTRY/REGISTRY_USERNAME/ml-service:TAG ---
       - name: Push image to registry
-        if: startsWith(github.ref, 'refs/tags/v') && secrets.GCP_SA_KEY == '' && secrets.REGISTRY != ''
+        if: startsWith(github.ref, 'refs/tags/v') && vars.REGISTRY_TYPE != 'gcp'
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
           docker tag ml-service:latest ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/ml-service:$VERSION
