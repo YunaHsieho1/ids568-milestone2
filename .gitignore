@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# GCP 金鑰（絕對不要 commit）
+*-credentials*.json
+*service-account*.json
+*-key.json
+
+# IDE / OS
+.idea/
+.DS_Store
+*.swp
